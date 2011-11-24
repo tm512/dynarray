@@ -43,7 +43,7 @@ dynarray_t *dynarray_create (uint32_t size, uint32_t max, uint8_t resize)
 
 	if (!ret->index || !ret->elements)
 	{
-		free (ret);
+		dynarray_delete (ret);
 		return NULL;
 	}
 
@@ -56,8 +56,15 @@ dynarray_t *dynarray_create (uint32_t size, uint32_t max, uint8_t resize)
 // Destroy dynarray
 void dynarray_delete (dynarray_t *arr)
 {
-	free (arr->index);
-	free (arr->elements);
+	if (!arr)
+		return;
+
+	if (arr->index)
+		free (arr->index);
+
+	if (arr->elements)
+		free (arr->elements);
+
 	free (arr);
 
 	return;
