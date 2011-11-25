@@ -24,21 +24,21 @@
 typedef struct
 {
 	// Element properties
-	uint32_t e_size;
-	uint32_t e_max;
+	unsigned int e_size;
+	unsigned int e_max;
 
 	// >0 if we want to resize array
-	uint8_t resize;
+	unsigned char resize;
 
 	void **index;
 	void *elements;
 } dynarray_t;
 
-dynarray_t *dynarray_create (uint32_t size, uint32_t max, uint8_t resize);
+dynarray_t *dynarray_create (unsigned int size, unsigned int max, unsigned char resize);
 void dynarray_delete (dynarray_t *arr);
 dynarray_t *dynarray_resize (dynarray_t *arr);
 void *dynarray_push (dynarray_t *arr, void *new);
-void dynarray_clear (dynarray_t *arr, uint32_t ele);
+void dynarray_clear (dynarray_t *arr, unsigned int ele);
 void dynarray_pop (dynarray_t *arr, void *dest);
 
 #endif // DYNARRAY_H__

@@ -26,7 +26,7 @@
 #include "dynarray.h"
 
 // Create the array on the heap, initialize.
-dynarray_t *dynarray_create (uint32_t size, uint32_t max, uint8_t resize)
+dynarray_t *dynarray_create (unsigned int size, unsigned int max, unsigned char resize)
 {
 	dynarray_t *ret = (dynarray_t *) malloc (sizeof (dynarray_t));
 
@@ -131,7 +131,7 @@ void *dynarray_push (dynarray_t *arr, void *new)
 }
 
 // Clear element from array
-void dynarray_clear (dynarray_t *arr, uint32_t ele)
+void dynarray_clear (dynarray_t *arr, unsigned int ele)
 {
 	if (!arr || ele > arr->e_max)
 		return;
