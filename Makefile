@@ -15,7 +15,13 @@ libdynarray.a: dynarray.o
 	ar cru libdynarray.a dynarray.o
 	ranlib libdynarray.a
 
+example: libdynarray.a
+	$(CC) -O$(OPT) -g$(DBG) -c example.c -o example.o
+	$(CC) example.o libdynarray.a -o example
+
 clean:
 	@echo Cleaning...
-	@rm libdynarray.a
-	@rm dynarray.o
+	@rm -f libdynarray.a
+	@rm -f dynarray.o
+	@rm -f example
+	@rm -f example.o
