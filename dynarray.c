@@ -70,18 +70,18 @@ void dynarray_delete (dynarray_t *arr)
 	return;
 }
 
-// Resize array, adding arr->resize elements
+// Resize array
 // returns arr on success, NULL on failure
-dynarray_t *dynarray_resize (dynarray_t *arr)
+dynarray_t *dynarray_resize (dynarray_t *arr, unsigned int new_size)
 {
 	void *tmp;
 
-	if (!(tmp = realloc (arr->index, arr->e_max * sizeof (void *) + arr->resize * sizeof (void *))))
+	if (!(tmp = realloc (arr->index, new_size * sizeof (void *))))
 		return NULL;
 	else
 		arr->index = tmp;
 
-	if (!(tmp = realloc (arr->elements, arr->e_max * arr->e_size + arr->resize * arr->e_size)))
+	if (!(tmp = realloc (arr->elements, new_size * arr->e_size)))
 		return NULL;
 
 	// Adjust index if necessary
@@ -96,15 +96,27 @@ dynarray_t *dynarray_resize (dynarray_t *arr)
 	} 
 
 	// Initialize new memory
-	memset (arr->index + arr->e_max, 0, arr->resize * sizeof (void *));
-	memset ((char*)arr->elements + arr->e_max * arr->e_size, 0, arr->resize * arr->e_size);
+	if (new_size > arr->e_max)
+	{
+		memset (arr->index + arr->e_max, 0, (new_size - arr->e_max) * sizeof (void *));
+		memset ((char*)arr->elements + arr->e_max * arr->e_size, 0, (new_size - arr->e_max) * arr->e_size);
+	}
 
-	arr->e_max += arr->resize;
+	arr->e_max = new_size;
 
 	return arr;
 }
 
 // Add element to array, returns pointer to new element or NULL on failure
+void *dynarray_insert (dynarray_t *arr, void *new, unsigned int pos)
+{
+	if (pos > arr->e_max || !new || !arr)
+		return NULL;
+
+	return arr->index [pos] = memcpy ((char*)arr->elements + arr->e_size * pos, new, arr->e_size);
+}
+
+// Push element
 void *dynarray_push (dynarray_t *arr, void *new)
 {
 	// Valid?
@@ -121,13 +133,13 @@ void *dynarray_push (dynarray_t *arr, void *new)
 	{
 		if (arr->resize)
 		{
-			return dynarray_push (dynarray_resize (arr), new);
+			return dynarray_push (dynarray_resize (arr, arr->e_max + arr->resize), new);
 		}
 		else
 			return NULL;
 	}
 
-	return arr->index [i] = memcpy ((char*)arr->elements + arr->e_size * i, new, arr->e_size);
+	return dynarray_insert (arr, new, i);
 }
 
 // Clear element from array
