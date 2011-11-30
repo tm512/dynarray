@@ -35,7 +35,7 @@ typedef struct
 } dynarray_t;
 
 dynarray_t *dynarray_create (unsigned int size, unsigned int max, unsigned char resize);
-void dynarray_delete (dynarray_t *arr);
+void dynarray_delete (dynarray_t **arr);
 dynarray_t *dynarray_resize (dynarray_t *arr, unsigned int new_size);
 void *dynarray_insert (dynarray_t *arr, void *new, unsigned int pos);
 void *dynarray_push (dynarray_t *arr, void *new);

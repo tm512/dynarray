@@ -32,7 +32,7 @@ int main (void)
 {
 	srand (42);
 
-	dynarray_t *arr = dynarray_create (sizeof (test_t), 4, 1);
+	dynarray_t *arr = dynarray_create (4, sizeof (test_t), 1);
 
 	// Add 10 random elements...
 	int i;
@@ -63,6 +63,6 @@ int main (void)
 	}
 
 	// Free:
-	dynarray_delete (arr);
+	dynarray_delete (&arr);
 	return 0;
 }

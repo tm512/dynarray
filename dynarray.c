@@ -26,7 +26,7 @@
 #include "dynarray.h"
 
 // Create the array on the heap, initialize.
-dynarray_t *dynarray_create (unsigned int size, unsigned int max, unsigned char resize)
+dynarray_t *dynarray_create (unsigned int max, unsigned int size, unsigned char resize)
 {
 	dynarray_t *ret = (dynarray_t *) malloc (sizeof (dynarray_t));
 
@@ -43,7 +43,7 @@ dynarray_t *dynarray_create (unsigned int size, unsigned int max, unsigned char 
 
 	if (!ret->index || !ret->elements)
 	{
-		dynarray_delete (ret);
+		dynarray_delete (&ret);
 		return NULL;
 	}
 
@@ -54,18 +54,19 @@ dynarray_t *dynarray_create (unsigned int size, unsigned int max, unsigned char 
 }
 
 // Destroy dynarray
-void dynarray_delete (dynarray_t *arr)
+void dynarray_delete (dynarray_t **arr)
 {
-	if (!arr)
+	if (!arr || !*arr)
 		return;
 
-	if (arr->index)
-		free (arr->index);
+	if ((*arr)->index)
+		free ((*arr)->index);
 
-	if (arr->elements)
-		free (arr->elements);
+	if ((*arr)->elements)
+		free ((*arr)->elements);
 
-	free (arr);
+	free (*arr);
+	*arr = NULL;
 
 	return;
 }
