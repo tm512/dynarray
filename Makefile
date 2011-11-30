@@ -19,9 +19,16 @@ example: libdynarray.a
 	$(CC) -O$(OPT) -g$(DBG) -c example.c -o example.o
 	$(CC) example.o libdynarray.a -o example
 
+tests: libdynarray.a
+	$(CC) -O$(OPT) -g$(DBG) -I. -c tests/tests.c -o tests/tests.o
+	$(CC) tests/tests.o libdynarray.a -o tests/tests
+
 clean:
 	@echo Cleaning...
 	@rm -f libdynarray.a
 	@rm -f dynarray.o
 	@rm -f example
 	@rm -f example.o
+	@rm -f tests/tests.o
+	@rm -f tests/tests
+ 
