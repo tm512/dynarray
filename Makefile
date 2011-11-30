@@ -3,8 +3,9 @@ AR=ar
 RANLIB=ranlib
 OPT=2
 DBG=0
+DEST=/usr/local/lib
 
-.PHONY: default clean
+.PHONY: default clean install
 
 default: libdynarray.a
 
@@ -18,6 +19,9 @@ libdynarray.a: dynarray.o
 example: libdynarray.a
 	$(CC) -O$(OPT) -g$(DBG) -c example.c -o example.o
 	$(CC) example.o libdynarray.a -o example
+
+install: libdynarray.a
+	mv libdynarray.a $(DEST)/
 
 clean:
 	@echo Cleaning...
